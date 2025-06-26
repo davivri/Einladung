@@ -137,7 +137,7 @@ function showSuccessMessage(guestName, response) {
     let messageText = '';
     
     if (response === 'yes') {
-        messageText = `Fantastisch, ${guestName}! Wir freuen uns riesig, dass du dabei bist! 🎉<br><br>Du bekommst in den nächsten Tagen noch die genaue Adresse und weitere Details.`;
+        messageText = `Fantastisch, ${guestName}! Wir freuen uns riesig, dass du dabei bist! 🎉`;
     } else {
         messageText = `Schade, ${guestName}, dass du nicht dabei sein kannst. 😢<br><br>Wir werden dich vermissen, aber verstehen es natürlich!`;
     }
