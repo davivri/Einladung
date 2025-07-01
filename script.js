@@ -3,6 +3,27 @@ const rsvpForm = document.getElementById('rsvpForm');
 const successMessage = document.getElementById('successMessage');
 const successText = document.getElementById('successText');
 
+// Check if form was already submitted on page load
+document.addEventListener('DOMContentLoaded', function() {
+    checkFormSubmissionStatus();
+});
+
+// Function to check if form was already submitted
+function checkFormSubmissionStatus() {
+    const submissionStatus = localStorage.getItem('nadjaPartyFormSubmitted');
+    if (submissionStatus === 'true') {
+        // Form was already submitted, make it non-editable
+        makeFormNonEditable();
+        
+        // Show success message with stored data
+        const storedRSVPs = JSON.parse(localStorage.getItem('nadjaPartyRSVPs')) || [];
+        if (storedRSVPs.length > 0) {
+            const lastRSVP = storedRSVPs[storedRSVPs.length - 1];
+            showSuccessMessage(lastRSVP.name, lastRSVP.response);
+        }
+    }
+}
+
 // Form submission handler
 rsvpForm.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -41,11 +62,17 @@ rsvpForm.addEventListener('submit', function(e) {
             // Store RSVP data locally as backup
             storeRSVPLocally(rsvpData);
             
+            // Mark form as submitted
+            localStorage.setItem('nadjaPartyFormSubmitted', 'true');
+            
+            // Show themed popup
+            showThemePopup(guestName, response);
+            
+            // Make form non-editable
+            makeFormNonEditable();
+            
             // Show success message
             showSuccessMessage(guestName, response);
-            
-            // Hide form
-            rsvpForm.style.display = 'none';
             
             // Reset button
             submitBtn.innerHTML = originalBtnText;
@@ -60,11 +87,17 @@ rsvpForm.addEventListener('submit', function(e) {
             // Store locally as fallback
             storeRSVPLocally(rsvpData);
             
+            // Mark form as submitted
+            localStorage.setItem('nadjaPartyFormSubmitted', 'true');
+            
+            // Show themed popup
+            showThemePopup(guestName, response);
+            
+            // Make form non-editable
+            makeFormNonEditable();
+            
             // Show success message anyway (user doesn't need to know about technical issues)
             showSuccessMessage(guestName, response);
-            
-            // Hide form
-            rsvpForm.style.display = 'none';
             
             // Reset button
             submitBtn.innerHTML = originalBtnText;
@@ -83,10 +116,7 @@ async function sendToPowerAutomate(rsvpData) {
     const requestBody = {
         name: rsvpData.name,
         response: rsvpData.response,
-        message: rsvpData.message,
-        timestamp: rsvpData.timestamp,
-        date: rsvpData.date,
-        time: rsvpData.time
+        message: rsvpData.message
     };
     
     try {
@@ -129,6 +159,177 @@ function storeRSVPLocally(rsvpData) {
         
     } catch (error) {
         console.error('Fehler beim Speichern der RSVP:', error);
+    }
+}
+
+// Function to show themed popup
+function showThemePopup(guestName, response) {
+    const popupMessages = [
+        "🌞 Sommer, Sonne, Sonnenschein - das wird ein tolles Fest! 🌞",
+        "🎉 Party-Time! Lass uns das Sommerfest rocken! 🎉",
+        "🌺 Coole Leute, warme Vibes - perfekt für Nadjas Tag! 🌺",
+        "☀️ Sonnige Grüße und gute Laune garantiert! ☀️",
+        "🎊 Ready to party? Das wird legendär! 🎊"
+    ];
+    
+    const randomMessage = popupMessages[Math.floor(Math.random() * popupMessages.length)];
+    
+    let popupText = '';
+    if (response === 'yes') {
+        popupText = `Yeahhh, ${guestName}! 🎉\n\n${randomMessage}\n\nWir können es kaum erwarten!`;
+    } else {
+        popupText = `Oh nein, ${guestName}! 😢\n\n${randomMessage}\n\nSchade, dass du nicht dabei sein kannst, aber wir verstehen es!`;
+    }
+    
+    // Create custom popup overlay
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        animation: fadeIn 0.3s ease-in;
+    `;
+    
+    const popup = document.createElement('div');
+    popup.style.cssText = `
+        background: linear-gradient(135deg, #FFE66D 0%, #FF8E53 50%, #FF6B6B 100%);
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 90vw;
+        width: 400px;
+        margin: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        animation: popIn 0.5s ease-out;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 1.5;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        position: relative;
+        max-height: 80vh;
+        overflow-y: auto;
+    `;
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '🎉 Weiter 🎉';
+    closeBtn.style.cssText = `
+        background: white;
+        color: #FF6B6B;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease;
+    `;
+    
+    closeBtn.addEventListener('mouseenter', () => {
+        closeBtn.style.transform = 'scale(1.05)';
+    });
+    
+    closeBtn.addEventListener('mouseleave', () => {
+        closeBtn.style.transform = 'scale(1)';
+    });
+    
+    closeBtn.addEventListener('click', () => {
+        overlay.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => {
+            if (document.body.contains(overlay)) {
+                document.body.removeChild(overlay);
+            }
+        }, 300);
+    });
+    
+    // Add touch event for mobile devices
+    closeBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        overlay.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => {
+            if (document.body.contains(overlay)) {
+                document.body.removeChild(overlay);
+            }
+        }, 300);
+    });
+    
+    // Close popup when clicking outside (overlay)
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.style.animation = 'fadeOut 0.3s ease-out';
+            setTimeout(() => {
+                if (document.body.contains(overlay)) {
+                    document.body.removeChild(overlay);
+                }
+            }, 300);
+        }
+    });
+    
+    popup.innerHTML = popupText.replace(/\n/g, '<br>');
+    popup.appendChild(closeBtn);
+    overlay.appendChild(popup);
+    
+    // Add animations
+    const animationStyle = document.createElement('style');
+    animationStyle.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(animationStyle);
+    
+    document.body.appendChild(overlay);
+}
+
+// Function to make form non-editable
+function makeFormNonEditable() {
+    const form = document.getElementById('rsvpForm');
+    const inputs = form.querySelectorAll('input, textarea, button');
+    
+    inputs.forEach(input => {
+        input.disabled = true;
+        input.style.opacity = '0.6';
+        input.style.cursor = 'not-allowed';
+    });
+    
+    // Check if lock indicator already exists to avoid duplicates
+    if (!form.querySelector('.form-lock-indicator')) {
+        // Add a visual indicator that the form is locked
+        const lockIndicator = document.createElement('div');
+        lockIndicator.className = 'form-lock-indicator';
+        lockIndicator.innerHTML = '🔒 Antwort gesendet - Formular gesperrt';
+        lockIndicator.style.cssText = `
+            background: #f0f0f0;
+            color: #666;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            border: 2px dashed #ccc;
+        `;
+        
+        form.appendChild(lockIndicator);
     }
 }
 

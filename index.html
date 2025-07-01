@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌞 Nadja's Summer Surprise 🌞</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="sun-decoration">☀️</div>
+            <h1 class="main-title">Mission: Sommerfest!</h1>
+            <div class="subtitle">Nadja's 40. Geburtstag</div>
+            <div class="flowers-decoration">🌺 🌸 🌼 🌺</div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="invitation-text">
+                <p class="greeting">Liebe Freunde und Familie,</p>
+                
+                <p>wir planen ein <strong>fantastisches Sommerfest</strong> für Nadja zu ihrem 40. Geburtstag und ihr seid herzlich eingeladen!</p>
+                
+                <p>Lasst uns gemeinsam einen <em>unvergesslichen Sommertag</em> für sie zaubern. 🎉</p>
+
+                <div class="warning-box">
+                    <div class="warning-icon">🤫</div>
+                    <div class="warning-text">
+                        <strong>PSST! ABSOLUTE GEHEIMHALTUNG!</strong><br>
+                        Nadja darf nichts davon erfahren!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Party Details -->
+            <div class="party-details">
+                <h2>Die Party-Details</h2>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <div class="detail-icon">📅</div>
+                        <div class="detail-content">
+                            <strong>Wann:</strong><br>
+                            01. August 2025<br>
+                            ab 15:00 Uhr
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon">🏠</div>
+                        <div class="detail-content">
+                            <strong>Wo:</strong><br>
+                            Bei uns zu Hause
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RSVP Form -->
+            <div class="rsvp-section">
+                <h2>Bist du dabei?</h2>
+                <p>Bitte gib uns bis zum <strong>25. Juli 2025</strong> Bescheid!</p>
+                
+                <form id="rsvpForm" class="rsvp-form">
+                    <div class="form-group">
+                        <label for="guestName">Dein Name:</label>
+                        <input type="text" id="guestName" name="guestName" required placeholder="Wie heißt du?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Deine Antwort:</label>
+                        <div class="radio-group">
+                            <label class="radio-option yes-option">
+                                <input type="radio" name="response" value="yes" required>
+                                <span class="radio-custom"></span>
+                                🎉 Ich bin dabei!
+                            </label>
+                            <label class="radio-option no-option">
+                                <input type="radio" name="response" value="no" required>
+                                <span class="radio-custom"></span>
+                                😢 Leider nicht
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Nachricht (optional):</label>
+                        <textarea id="message" name="message" placeholder="Hast du noch etwas zu sagen?"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Antwort senden</span>
+                        <span class="btn-icon">📨</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Success Message (hidden initially) -->
+            <div id="successMessage" class="success-message" style="display: none;">
+                <div class="success-icon">🎊</div>
+                <h3>Vielen Dank!</h3>
+                <p id="successText"></p>
+                <p class="reminder"><strong>Denk dran: Kein Wort zu Nadja! 🤫</strong></p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Wir freuen uns auf eine wundervolle Feier! 🌞</p>
+            <div class="footer-decoration">🌺 ☀️ 🌸 ☀️ 🌺</div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

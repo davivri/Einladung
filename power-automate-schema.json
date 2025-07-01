@@ -16,22 +16,7 @@
       "type": "string",
       "title": "Nachricht",
       "description": "Optionale Nachricht vom Gast (kann 'Keine Nachricht' sein wenn leer)"
-    },
-    "timestamp": {
-      "type": "string",
-      "title": "ISO Zeitstempel",
-      "description": "Zeitstempel im ISO 8601 Format (z.B. 2025-08-01T15:30:45.123Z)"
-    },
-    "date": {
-      "type": "string",
-      "title": "Datum (DE Format)",
-      "description": "Datum im deutschen Format (z.B. 01.08.2025)"
-    },
-    "time": {
-      "type": "string",
-      "title": "Uhrzeit (DE Format)",
-      "description": "Uhrzeit im deutschen Format (z.B. 15:30:45)"
     }
   },
-  "required": ["name", "response", "message", "timestamp", "date", "time"]
+  "required": ["name", "response", "message"]
 }
